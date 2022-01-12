@@ -55,11 +55,15 @@ if CLIENT then
 
 
     -- Derma Settings
-        dermaPanelFontType = "HudSelectionText"
-        dermaPanelFontColour = Color(119, 135, 137, 255)
-        dermaPanelFontColour2 = Color(255, 255, 255, 255)
-        dermaFrameCurve = 10
-        dermaPanelButtonCurve = 10
+        FontType = "HudSelectionText"
+        FontColour = Color(255, 255, 255, 255)
+        FontColourShadow = Color(119, 135, 137, 255)
+        FramePrimaryColour = Color(120,120,120, 0)
+        FrameBorderColour = Color(0,0,0, 0)
+        ProgressEmptyColour = Color(60,60,60, 180)
+        ProgressBorderColour = Color(0,0,0, 180)
+        ProgressBarColour = Color(255,255,255, 180)
+        FrameCurve = 10
     -- End of Derma Settings
     
     --[[
@@ -75,9 +79,10 @@ if CLIENT then
         timerUI:SetVisible(true)
         timerUI:SetTitle("")
         timerUI:ShowCloseButton(true)
+        timerUI:SetPaintShadow(true)
         timerUI.Paint = function(s, w, h)
-            draw.RoundedBox(dermaFrameCurve, 0, 0, w, h, Color(0,0,0, 100))
-            draw.RoundedBox(dermaFrameCurve, 2, 2, w-4, h-4, Color(199,204,157, 100))
+            draw.RoundedBox(FrameCurve, 0, 0, w, h, FrameBorderColour)
+            draw.RoundedBox(FrameCurve, 2, 2, w-4, h-4, FramePrimaryColour)
         end
 
         timerProgress = vgui.Create("DProgress")
@@ -87,19 +92,34 @@ if CLIENT then
         timerProgress:SetParent(timerUI)
         timerProgress.Paint = function(s, w, h)
             
-            draw.RoundedBox(dermaFrameCurve, 0, 0, w, h, Color(0,0,0, 180))
-            draw.RoundedBox(dermaFrameCurve, 2, 2, w-4, h-4, Color(199,204,157, 180))
+            draw.RoundedBox(FrameCurve, 0, 0, w, h, ProgressBorderColour)
+            draw.RoundedBox(FrameCurve, 2, 2, w-4, h-4, ProgressEmptyColour)
 
-            draw.RoundedBox(dermaFrameCurve, 2, 2, w * timerProgress:GetFraction(), h-4, Color(255,255,255, 180))
+            draw.RoundedBox(FrameCurve, 2, 2, w * timerProgress:GetFraction(), h-4, ProgressBarColour)
 
         end
 
         timerLabel = vgui.Create("DLabel")
-        timerLabel:SetFont(dermaPanelFontType)
+        timerLabel:SetFont(FontType)
         timerLabel:SetText("Time Remaining:")
         timerLabel:SetSize( timerUI:GetSize(), 15 )
         timerLabel:SetPos(250 - string.len(timerLabel:GetText()), 5)
         timerLabel:SetParent(timerUI)
+        timerLabel:SetTextColor(FontColour)
+        timerLabel.Paint = function(s, w, h)
+            
+            struc = {}
+            struc["pos"] = {0, 0}
+            struc["color"] = FontColourShadow
+            struc["text"] = timerLabel:GetText()
+            struc["font"] = FontType
+            struc["xalign"] = TEXT_ALIGN_LEFT
+            struc["yalign"] = TEXT_ALIGN_TOP
+            
+
+            draw.TextShadow(struc, 2, 200)
+
+        end
         
     end
 
