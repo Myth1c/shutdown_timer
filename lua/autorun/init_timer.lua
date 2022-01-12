@@ -6,14 +6,11 @@
     Function: Upon calling the command, will display a timer on the screen before shutdown.
 
 ]]--
-TIMER_DEBUG = TIMER_DEBUG or { ENABLED = 1 }
+TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
 
-----      CONFIG      ----
-TIMER_Time = TIMER_Time or 30
-THINK_Delay = THINK_Delay or 1
-ERROR_Message = ERROR_Message or true
---------------------------
-
+TIMER_Time = Timer_Config.TIMER_Time or 30
+THINK_Delay = Timer_Config.THINK_Delay or 1
+ERROR_Message = Timer_Config.ERROR_Message or true
 ---- GLOBAL VARIABLES ----
 ----   DO NOT TOUCH   ----
 shouldShutdown = 0
