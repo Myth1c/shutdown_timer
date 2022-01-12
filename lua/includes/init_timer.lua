@@ -4,12 +4,29 @@
     by Mythic https://steamcommunity.com/id/MythicalMythic/
     
 ]]--
+
+--[[
+    Function: A custom function to print to console while debug mode is activated.
+    INPUT: String
+    OUTPUT: Prints the input into the console
+
+    TODO: Add a cleaner debug system like this:
+    ----   DEBUG   ----
+    *messages*
+    ---- DEBUG END ----
+]]--
+function DebugPrint(message)
+
+    if TIMER_DEBUG.ENABLED ~= 1 then return end
+    print(message)
+
+end
+
 TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
 
 if SERVER then
     
 
-    AddCSLuaFile()
 
     TIMER_Time = Timer_Config.TIMER_Time or 30
     THINK_Delay = Timer_Config.THINK_Delay or 1
@@ -99,7 +116,7 @@ if SERVER then
                 net.WriteInt(shouldShutdown, 2)
                 net.WriteInt(TIMER_TimeRemaining, 32)
                 net.WriteInt(TIMER_Time, 32)
-                net.WriteString(type)
+                net.WriteString("toggle")
             net.Send(ply)
 
         end
@@ -114,7 +131,7 @@ elseif CLIENT then
         INPUT: None
         OUTPUT: Tells the client to draw or hide the timer GUI
     ]]--
-
+    DebugPrint("Client Received File.")
     net.Receive("shutdown_notify", function(len, ply)
     
         local status = net.ReadInt(2)
@@ -141,22 +158,5 @@ elseif CLIENT then
         net.SendToServer()
     
     end)
-
-end
-
---[[
-    Function: A custom function to print to console while debug mode is activated.
-    INPUT: String
-    OUTPUT: Prints the input into the console
-
-    TODO: Add a cleaner debug system like this:
-    ----   DEBUG   ----
-    *messages*
-    ---- DEBUG END ----
-]]--
-function DebugPrint(message)
-
-    if TIMER_DEBUG.ENABLED ~= 1 then return end
-    print(message)
 
 end

@@ -36,7 +36,7 @@ if CLIENT then
     ]]--
     function UpdateTimer(timeRemaining, time)
 
-        if not timerUI:IsValid() then return end
+        if not IsValid(timerUI) then return end
 
         DebugPrint("Time Remaining: ".. timeRemaining.. "\nTimer Length: ".. time.."\nSetting Progress bar to: "..timeRemaining / time)
         timerProgress:SetFraction(timeRemaining / time)
