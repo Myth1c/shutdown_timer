@@ -1,7 +1,7 @@
 --[[
 
     Custom Shutdown Timer Config v 1.0
-    by Mythic
+    by Mythic https://steamcommunity.com/id/MythicalMythic/
 
 ]]--
 

@@ -1,3 +1,9 @@
+--[[
+
+    Custom Shutdown UI v 1.0
+    by Mythic https://steamcommunity.com/id/MythicalMythic/
+
+]]--
 if CLIENT then
 
     print("-----------------------------\n--Shutdown Timer GUI Loaded--\n-----------------------------")

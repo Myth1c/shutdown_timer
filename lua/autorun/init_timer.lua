@@ -1,10 +1,8 @@
 --[[
 
     Custom Shutdown Timer v 1.0
-    by Mythic
+    by Mythic https://steamcommunity.com/id/MythicalMythic/
     
-    Function: Upon calling the command, will display a timer on the screen before shutdown.
-
 ]]--
 TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
 
