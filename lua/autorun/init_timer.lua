@@ -6,25 +6,22 @@
     Function: Upon calling the command, will display a timer on the screen before shutdown.
 
 ]]--
-TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
-
-TIMER_Time = Timer_Config.TIMER_Time or 30
-THINK_Delay = Timer_Config.THINK_Delay or 1
-ERROR_Message = Timer_Config.ERROR_Message or true
----- GLOBAL VARIABLES ----
-----   DO NOT TOUCH   ----
-shouldShutdown = 0
-THINK_NextThink = CurTime() + THINK_Delay
-
-TIMER_TimeStarted = 0
-
-TIMER_TimeRemaining = 0
 
 if SERVER then
     
 
     AddCSLuaFile()
-    
+        
+    TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
+
+    TIMER_Time = Timer_Config.TIMER_Time or 30
+    THINK_Delay = Timer_Config.THINK_Delay or 1
+    ERROR_Message = Timer_Config.ERROR_Message or true
+
+    shouldShutdown = 0
+    THINK_NextThink = CurTime() + THINK_Delay
+    TIMER_TimeStarted = 0
+    TIMER_TimeRemaining = 0
 
 
 
