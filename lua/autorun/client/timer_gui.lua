@@ -4,6 +4,7 @@ if CLIENT then
     
     local timerUI = {}
     local timerProgress = {}
+    local timerLabel = {}
 
     
     --[[
@@ -33,6 +34,13 @@ if CLIENT then
 
         DebugPrint("Time Remaining: ".. timeRemaining.. "\nTimer Length: ".. time.."\nSetting Progress bar to: "..timeRemaining / time)
         timerProgress:SetFraction(timeRemaining / time)
+
+        --local hours = math.floor(timeRemaining / 3600)
+        local minutes = math.floor(timeRemaining / 60)
+        local seconds = math.floor(timeRemaining % 60)
+
+        timerLabel:SetText("Restart in: "..minutes..":"..seconds)
+        timerLabel:SetPos(250 - string.len(timerLabel:GetText()), 5)
     end
 
 
@@ -40,14 +48,6 @@ if CLIENT then
         dermaPanelFontType = "HudSelectionText"
         dermaPanelFontColour = Color(119, 135, 137, 255)
         dermaPanelFontColour2 = Color(255, 255, 255, 255)
-        dermaPanelButtonColour1 = Color(119, 135, 137, 255)
-        dermaPanelButtonColour2 = Color(234, 204, 84, 255)
-        dermaPanelButtonColour3 = Color(159, 234, 84, 255)
-        dermaPanelButtonColour4 = Color(239, 134, 134, 255)
-        dermaPanelButtonColour5 = Color(145, 145, 145, 255)
-        dermaPanelButtonColour6 = Color(60, 60, 145, 255)
-        dermaPanelButtonColour7 = Color(239, 134, 134, 100)
-        dermaPanelButtonColour8 = Color(119, 135, 137, 100)
         dermaFrameCurve = 10
         dermaPanelButtonCurve = 10
     -- End of Derma Settings
@@ -83,6 +83,14 @@ if CLIENT then
             draw.RoundedBox(dermaFrameCurve, 2, 2, w * timerProgress:GetFraction(), h-4, Color(255,255,255, 180))
 
         end
+
+        timerLabel = vgui.Create("DLabel")
+        timerLabel:SetFont(dermaPanelFontType)
+        timerLabel:SetText("Time Remaining:")
+        timerLabel:SetSize( timerUI:GetSize(), 15 )
+        timerLabel:SetPos(250 - string.len(timerLabel:GetText()), 5)
+        timerLabel:SetParent(timerUI)
+        
     end
 
 
