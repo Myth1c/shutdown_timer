@@ -11,10 +11,10 @@ if CLIENT then
         INPUT: INT time, INT status
         OUTPUT: Tells the client to draw or hide the timer GUI
     ]]--
-    function StartShutdownTimer(time, status)
+    function StartShutdownTimer(status)
 
         if status == 1 then
-            DebugPrint("Server shutting down in ".. time.. " seconds. There is ".. TIMER_TimeRemaining * 100 .. " % of time left.")
+            DebugPrint("Server shutting down.")
             CreateFrame()
         else
             DebugPrint("Server shutdown aborted.")
