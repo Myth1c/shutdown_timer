@@ -18,7 +18,7 @@ if CLIENT then
             CreateFrame()
         else
             DebugPrint("Server shutdown aborted.")
-            if timerUI:IsValid() then timerUI:SetVisible(false) end
+            if IsValid(timerUI) then timerUI:SetVisible(false) end
         end
 
     end

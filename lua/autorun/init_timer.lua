@@ -6,13 +6,12 @@
     Function: Upon calling the command, will display a timer on the screen before shutdown.
 
 ]]--
+TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
 
 if SERVER then
     
 
     AddCSLuaFile()
-        
-    TIMER_DEBUG = Timer_Config.TIMER_DEBUG or { ENABLED = 1 }
 
     TIMER_Time = Timer_Config.TIMER_Time or 30
     THINK_Delay = Timer_Config.THINK_Delay or 1
@@ -113,7 +112,7 @@ if CLIENT then
 
         DebugPrint("Client Status: ".. status)
 
-        StartShutdownTimer(TIMER_Time, status);
+        StartShutdownTimer(status);
     
     end)
 
