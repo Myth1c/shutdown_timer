@@ -26,7 +26,6 @@ if SERVER then
 
 
     util.AddNetworkString("shutdown_notify")
-    util.AddNetworkString("shutdown_update")
 
     concommand.Add("sv_start_shutdown", function(ply, cmd, args) ToggleShutdown() end, nil, "Start the timer on the server.", 0)
 
@@ -34,8 +33,6 @@ if SERVER then
         Function: Toggles the shouldShutdown variable between 0 & 1. Also will notify the client that they should either draw or clear the GUI for the timer.
         INPUT: None
         OUTPUT: Sends a networked string to the client
-        
-        TODO: Find a better way to optimize network messages.
     ]]--
     function ToggleShutdown()
 
@@ -46,9 +43,7 @@ if SERVER then
         shouldShutdown = 1 - shouldShutdown;
         DebugPrint("Shutdown Status: ".. shouldShutdown.. "\nTime Started: ".. TIMER_TimeStarted.. "\nTime Remaining: ".. TIMER_TimeRemaining)
 
-        net.Start("shutdown_notify")
-            net.WriteInt(shouldShutdown, 2)
-        net.Broadcast()
+        SendNetMessage(shouldShutdown, TIMER_TimeRemaining, TIMER_Time, "toggle")
 
 
     end
@@ -57,8 +52,6 @@ if SERVER then
         Function: A think function that updates every tick on the server. If there the timer isn't active or if it is active and not enough time has been set for the think, it won't do anything.
         INPUT: None
         OUTPUT: 2 Network Messages that give information for the GUI
-
-        TODO: Find a better way to optimize network messages.
     ]]--
     hook.Add("Think", "ShutdownThink", function() 
         if shouldShutdown ~= 1 then return end
@@ -70,18 +63,13 @@ if SERVER then
 
             DebugPrint("Time Started: ".. TIMER_TimeStarted.. "\nTime Remaining: ".. TIMER_TimeRemaining)
 
-            net.Start("shutdown_update")
-                net.WriteInt(TIMER_TimeRemaining, 32)
-                net.WriteInt(TIMER_Time, 32)
-            net.Broadcast()
+            SendNetMessage(shouldShutdown, TIMER_TimeRemaining, TIMER_Time, "update")
 
             if TIMER_TimeRemaining < 1 then 
                 shouldShutdown = 0 
                 DebugPrint("Shut Down Complete.")
 
-                net.Start("shutdown_notify")
-                    net.WriteInt(shouldShutdown, 2)
-                net.Broadcast()
+                SendNetMessage(shouldShutdown, TIMER_TimeRemaining, TIMER_Time, "toggle")
 
             end
 
@@ -92,41 +80,43 @@ if SERVER then
 
     end)
 
+    function SendNetMessage(status, time, timeRemaining, type)
 
-end
-if CLIENT then
+        net.Start("shutdown_notify")
+            net.WriteInt(shouldShutdown, 2)
+            net.WriteInt(TIMER_TimeRemaining, 32)
+            net.WriteInt(TIMER_Time, 32)
+            net.WriteString(type)
+        net.Broadcast()
+
+    end
+
+
+elseif CLIENT then
 
     --[[
         Function: Receives network messages for when the timer should be activated or deactivated
         INPUT: None
         OUTPUT: Tells the client to draw or hide the timer GUI
-
-        TODO: Combine this network message and the one below it into a single method
     ]]--
 
     net.Receive("shutdown_notify", function(len, ply)
     
         local status = net.ReadInt(2)
+        local timeRemaining = net.ReadInt(32)
+        local time = net.ReadInt(32)
+        local type = net.ReadString()
 
-        DebugPrint("Client Status: ".. status)
+        DebugPrint("Client Status: ".. status .. "\nWarning Length: "..time.."\nTime Remaining: "..timeRemaining)
 
-        StartShutdownTimer(status);
+        if type == "toggle" then 
+            StartShutdownTimer(status)
+        elseif type == "update" then 
+            UpdateTimer(timeRemaining, time)
+        else 
+            DebugPrint("Invalid network message.") 
+        end
     
-    end)
-
-    --[[
-        Function: Receives network messages for the time left until shutdown. 
-        INPUT: None
-        OUTPUT: Tells the client to update the progress bar on the GUI
-
-        TODO: Combine this network message and the one below it into a single method
-    ]]--
-    net.Receive("shutdown_update", function(len, ply)
-        
-        DebugPrint("Update Notification Received")
-
-        UpdateTimer(net.ReadInt(32), net.ReadInt(32))
-
     end)
         
     -- TODO: Add a client hook to draw the timer if someone connects while the timer is active
