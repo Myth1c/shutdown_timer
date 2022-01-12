@@ -35,11 +35,21 @@ if CLIENT then
         DebugPrint("Time Remaining: ".. timeRemaining.. "\nTimer Length: ".. time.."\nSetting Progress bar to: "..timeRemaining / time)
         timerProgress:SetFraction(timeRemaining / time)
 
-        --local hours = math.floor(timeRemaining / 3600)
+        local hours = math.floor(timeRemaining / 3600)
         local minutes = math.floor(timeRemaining / 60)
         local seconds = math.floor(timeRemaining % 60)
 
-        timerLabel:SetText("Restart in: "..minutes..":"..seconds)
+        local hourText = "" .. tostring(hours)
+        local minuteText = "" .. tostring(minutes)
+        local secondText = "" .. tostring(seconds)
+
+        if hours < 10 then hourText = "0"..hours end
+        if minutes < 10 then minuteText = "0"..minutes end
+        if seconds < 10 then secondText = "0"..seconds end
+
+        fullText = "Restart in: "..hourText..":"..minuteText..":"..secondText
+
+        timerLabel:SetText(fullText)
         timerLabel:SetPos(250 - string.len(timerLabel:GetText()), 5)
     end
 
