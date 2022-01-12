@@ -55,15 +55,15 @@ if CLIENT then
 
 
     -- Derma Settings
-        FontType = "HudSelectionText"
-        FontColour = Color(255, 255, 255, 255)
-        FontColourShadow = Color(119, 135, 137, 255)
-        FramePrimaryColour = Color(120,120,120, 0)
-        FrameBorderColour = Color(0,0,0, 0)
-        ProgressEmptyColour = Color(60,60,60, 180)
-        ProgressBorderColour = Color(0,0,0, 180)
-        ProgressBarColour = Color(255,255,255, 180)
-        FrameCurve = 10
+        FontType = Timer_Config.GUI_Font or "HudSelectionText"
+        FontColour = Timer_Config.GUI_Font_mainColour or Color(255, 255, 255, 255)
+        FontColourShadow = Timer_Config.GUI_Font_shadowColour or Color(119, 135, 137, 255)
+        FramePrimaryColour = Timer_Config.GUI_Frame_Foreground or Color(120,120,120, 0)
+        FrameBorderColour = Timer_Config.GUI_Frame_Background or Color(0,0,0, 0)
+        ProgressEmptyColour = Timer_Config.GUI_ProgressBar_Background or Color(60,60,60, 180)
+        ProgressBorderColour = Timer_Config.GUI_ProgressBar_Border or Color(0,0,0, 180)
+        ProgressBarColour = Timer_Config.GUI_ProgressBar_BarColor or Color(255,255,255, 180)
+        FrameCurve = Timer_Config.FrameCurve or 10
     -- End of Derma Settings
     
     --[[
