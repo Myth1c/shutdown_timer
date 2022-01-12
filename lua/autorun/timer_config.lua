@@ -1,6 +1,6 @@
 --[[
 
-    Custom Shutdown Timer Config v 1.1
+    Custom Shutdown Timer Config v 1.2
     by Mythic https://steamcommunity.com/id/MythicalMythic/
 
 ]]--

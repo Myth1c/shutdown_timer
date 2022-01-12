@@ -1,6 +1,6 @@
 --[[
 
-    Custom Shutdown Timer v 1.1
+    Custom Shutdown Timer v 1.2
     by Mythic https://steamcommunity.com/id/MythicalMythic/
     
 ]]--
@@ -26,6 +26,7 @@ if SERVER then
 
 
     util.AddNetworkString("shutdown_notify")
+    util.AddNetworkString("shutdown_connected")
 
     concommand.Add("sv_start_shutdown", function(ply, cmd, args) ToggleShutdown() end, nil, "Start the timer on the server.", 0)
 
@@ -91,6 +92,20 @@ if SERVER then
 
     end
 
+    net.Receive("shutdown_connected", function (len, ply)
+
+        if shouldShutdown == 1 then
+            net.Start("shutdown_notify")
+                net.WriteInt(shouldShutdown, 2)
+                net.WriteInt(TIMER_TimeRemaining, 32)
+                net.WriteInt(TIMER_Time, 32)
+                net.WriteString(type)
+            net.Send(ply)
+
+        end
+
+    end)
+
 
 elseif CLIENT then
 
@@ -120,6 +135,12 @@ elseif CLIENT then
     end)
         
     -- TODO: Add a client hook to draw the timer if someone connects while the timer is active
+    hook.Add("InitPostEntity", "RequestGUI", function()
+    
+        net.Start("shutdown_connected")
+        net.SendToServer()
+    
+    end)
 
 end
 
