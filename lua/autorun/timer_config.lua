@@ -50,6 +50,7 @@ print("----------------------------\n---    Config Loaded     ---\n-------------
 
 if SERVER then
     AddCSLuaFile("includes/init_timer.lua")
+    include "includes/init_timer.lua"
 else
     include "includes/init_timer.lua"
 end
